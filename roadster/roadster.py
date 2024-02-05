@@ -22,8 +22,8 @@ def load_route(route):
     speed_kmph = data['speed_kmph']
     return distance_km, speed_kmph
 
-def plot_route(route):
 
+def plot_route(route):
     """
     Plots the route in given route file
     """
@@ -54,7 +54,7 @@ def consumption(v):
     # REMOVE THE FOLLOWING LINE AND WRITE YOUR SOLUTION
     # raise NotImplementedError('consumption not implemented yet!')
 
-    return 546.8 * v ** (-1) + 50.31 + 0.2584 * v + 0.008210 * v ** 2
+    return 546.8 * v ** (-1) + 50.31 + 0.2594 * v + 0.008210 * v ** 2
 
 
 ### PART 1B ###
@@ -75,15 +75,53 @@ def velocity(x, route):
 
 
 ### PART 2A ###
-def time_to_destination(x, route, n):
-    # REMOVE THE FOLLOWING LINE AND WRITE YOUR SOLUTION
-    raise NotImplementedError('time_to_destination not implemented yet!')
+
+def squared(x):
+    return x ** 2
+
+
+def integrera(f, a, b, N):
+    h = (b - a) / (N - 1)
+    xi = np.linspace(a, b, N)
+    fi = f(xi)
+    Aj = h * (fi[:-1] + fi[1:]) / 2
+    return sum(Aj)
+
+
+def time_to_destination(x, route, N):
+    """ integrate with trapetsmetoden """
+
+    # points = 0
+    # for i in range((N - 1)):
+    #    points += (1 / velocity(x / (N - 1) * i, route) + 1 / velocity(x / (N - 1) * (i + 1), route))
+
+    # return points * (x / (N - 1) / 2) Egen metod, långsam
+
+    h = (x - 0) / (N - 1)
+    xi = np.linspace(0, x, N)
+    fi = 1 / velocity(xi, route)
+    Aj = h * (fi[:-1] + fi[1:]) / 2
+    return sum(Aj)
 
 
 ### PART 2B ###
-def total_consumption(x, route, n):
-    # REMOVE THE FOLLOWING LINE AND WRITE YOUR SOLUTION
-    raise NotImplementedError('total_consumption not implemented yet!')
+def total_consumption(x, route, N):
+    # points = 0
+    # for i in range((N - 1)):
+    #     points += consumption(velocity(x / (N - 1) * i, route)) + consumption(velocity(x / (N - 1) * (i + 1), route))
+    # return points * (x / (N - 1) / 2)
+
+    h = (x - 0) / (N - 1)
+    xi = np.linspace(0, x, N)
+    fi = consumption(velocity(xi, route))
+    Aj = h * (fi[:-1] + fi[1:]) / 2
+    return sum(Aj)
+
+# route = "speed_anna.npz"
+# distance_km, _ = load_route(route)
+# x = distance_km[-1]
+# print(total_consumption(distance_km[-1], route, 10000001))
+# print(total_consumption(distance_km[-1], route, 10001))
 
 
 ### PART 3A ###
